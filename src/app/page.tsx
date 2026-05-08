@@ -29,24 +29,27 @@ export default function HomePage() {
           <Link
             key={banner.id}
             href={banner.linkUrl}
-            className={`absolute inset-0 bg-gradient-to-r ${banner.bgColor} transition-opacity duration-700 flex items-center ${
+            className={`absolute inset-0 transition-opacity duration-700 flex items-center ${
               i === currentBanner ? "opacity-100 z-10" : "opacity-0 z-0"
             }`}
           >
+            {/* Background image - full visibility */}
             {banner.image && (
               <img
                 src={banner.image}
                 alt={banner.title}
-                className="absolute inset-0 w-full h-full object-cover mix-blend-overlay opacity-40"
+                className="absolute inset-0 w-full h-full object-cover"
               />
             )}
+            {/* Dark gradient overlay on left side for text readability */}
+            <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent" />
             <div className="max-w-7xl mx-auto px-4 w-full relative z-10">
               <div className="max-w-xl">
-                <h1 className="text-3xl md:text-5xl font-black text-white leading-tight whitespace-pre-line">
+                <h1 className="text-3xl md:text-5xl font-black text-white leading-tight whitespace-pre-line drop-shadow-lg">
                   {banner.title}
                 </h1>
-                <p className="mt-4 text-lg md:text-xl text-white/80">{banner.subtitle}</p>
-                <span className="inline-flex items-center gap-2 mt-6 px-6 py-3 bg-white/20 backdrop-blur text-white font-medium rounded-full hover:bg-white/30 transition">
+                <p className="mt-4 text-lg md:text-xl text-white/90 drop-shadow-md">{banner.subtitle}</p>
+                <span className="inline-flex items-center gap-2 mt-6 px-6 py-3 bg-white/20 backdrop-blur-sm text-white font-medium rounded-full hover:bg-white/30 transition border border-white/20">
                   자세히 보기 <ArrowRight className="w-4 h-4" />
                 </span>
               </div>
