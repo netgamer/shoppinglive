@@ -3,8 +3,10 @@
 import Link from "next/link";
 import {
   ArrowLeft, Star, Users, Clock, Calendar, MapPin, Video,
-  Monitor, CheckCircle2, BookOpen,
+  Monitor, CheckCircle2, BookOpen, Award,
 } from "lucide-react";
+import { motion } from "framer-motion";
+import { MotionSection } from "@/components/Motion";
 import { courses, formatPrice, getTypeLabel } from "@/lib/mock-data";
 
 export default function CourseDetailClient({ id }: { id: string }) {
@@ -13,8 +15,11 @@ export default function CourseDetailClient({ id }: { id: string }) {
   if (!course) {
     return (
       <div className="max-w-7xl mx-auto px-4 py-20 text-center">
-        <p className="text-gray-500">교육 과정을 찾을 수 없습니다.</p>
-        <Link href="/education" className="mt-4 inline-block text-secondary hover:underline">
+        <div className="w-20 h-20 mx-auto mb-4 bg-gray-50 rounded-3xl flex items-center justify-center">
+          <BookOpen className="w-10 h-10 text-gray-300" />
+        </div>
+        <p className="text-gray-500 text-lg">교육 과정을 찾을 수 없습니다.</p>
+        <Link href="/education" className="mt-4 inline-block text-secondary hover:underline font-medium">
           목록으로 돌아가기
         </Link>
       </div>
@@ -40,137 +45,166 @@ export default function CourseDetailClient({ id }: { id: string }) {
   };
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-8">
-      <Link href="/education" className="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-secondary mb-6">
-        <ArrowLeft className="w-4 h-4" /> 교육 프로그램 목록
-      </Link>
+    <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8">
+      <MotionSection>
+        <Link href="/education" className="inline-flex items-center gap-1.5 text-sm text-gray-400 hover:text-secondary mb-6 font-medium transition-colors group">
+          <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
+          교육 프로그램 목록
+        </Link>
+      </MotionSection>
 
       {/* Hero */}
-      <div className={`aspect-[21/9] rounded-2xl bg-gradient-to-br ${categoryColors[course.category] || "from-gray-400 to-gray-600"} relative overflow-hidden`}>
-        {course.thumbnail ? (
-          <img src={course.thumbnail} alt={course.title} className="w-full h-full object-cover" />
-        ) : (
-          <div className="w-full h-full flex items-center justify-center">
-            <span className="text-white/10 text-[150px] font-black">{course.category.charAt(0)}</span>
+      <MotionSection>
+        <div className={`aspect-[21/9] rounded-3xl bg-gradient-to-br ${categoryColors[course.category] || "from-gray-400 to-gray-600"} relative overflow-hidden shadow-2xl`}>
+          {course.thumbnail ? (
+            <img src={course.thumbnail} alt={course.title} className="w-full h-full object-cover" />
+          ) : (
+            <div className="w-full h-full flex items-center justify-center">
+              <span className="text-white/10 text-[150px] font-black">{course.category.charAt(0)}</span>
+            </div>
+          )}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+          <div className="absolute bottom-5 left-5 right-5 flex items-end justify-between">
+            <span className="px-4 py-1.5 bg-white/15 backdrop-blur-md text-white text-sm font-semibold rounded-xl border border-white/10">
+              {course.category}
+            </span>
+            <div className="flex items-center gap-1.5 px-3 py-1.5 bg-black/40 backdrop-blur-md rounded-xl">
+              {[...Array(5)].map((_, i) => (
+                <Star key={i} className={`w-3.5 h-3.5 ${i < Math.floor(course.rating) ? "fill-amber-400 text-amber-400" : "fill-white/20 text-white/20"}`} />
+              ))}
+              <span className="text-white text-sm font-bold ml-1">{course.rating}</span>
+            </div>
           </div>
-        )}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
-        <div className="absolute bottom-4 left-4 right-4">
-          <span className="px-3 py-1 bg-white/20 backdrop-blur text-white text-sm font-medium rounded-full">
-            {course.category}
-          </span>
         </div>
-      </div>
+      </MotionSection>
 
       {/* Main info */}
-      <div className="mt-8">
-        <h1 className="text-2xl md:text-3xl font-bold text-gray-900">{course.title}</h1>
-        <p className="mt-2 text-gray-600 leading-relaxed">{course.description}</p>
+      <MotionSection delay={0.1} className="mt-8">
+        <h1 className="text-2xl md:text-3xl font-extrabold text-gray-900 tracking-tight">{course.title}</h1>
+        <p className="mt-3 text-gray-600 leading-relaxed text-lg">{course.description}</p>
 
-        {/* Meta */}
-        <div className="mt-6 grid grid-cols-2 md:grid-cols-4 gap-4">
-          <div className="p-4 bg-gray-50 rounded-xl">
-            <div className="flex items-center gap-2 text-sm text-gray-500 mb-1">
-              {typeIcons[course.type]}
-              수강 방식
-            </div>
-            <p className="font-bold text-gray-900">{getTypeLabel(course.type)}</p>
-          </div>
-          <div className="p-4 bg-gray-50 rounded-xl">
-            <div className="flex items-center gap-2 text-sm text-gray-500 mb-1">
-              <Calendar className="w-5 h-5" />
-              교육 기간
-            </div>
-            <p className="font-bold text-gray-900">{course.startDate} ~</p>
-            <p className="text-sm text-gray-500">{course.endDate}</p>
-          </div>
-          <div className="p-4 bg-gray-50 rounded-xl">
-            <div className="flex items-center gap-2 text-sm text-gray-500 mb-1">
-              <Clock className="w-5 h-5" />
-              총 수업시간
-            </div>
-            <p className="font-bold text-gray-900">{Math.floor(totalDuration / 60)}시간 {totalDuration % 60}분</p>
-          </div>
-          <div className="p-4 bg-gray-50 rounded-xl">
-            <div className="flex items-center gap-2 text-sm text-gray-500 mb-1">
-              <Users className="w-5 h-5" />
-              수강 현황
-            </div>
-            <p className="font-bold text-gray-900">{course.currentStudents}/{course.maxStudents}명</p>
-            <div className="mt-1 h-1.5 bg-gray-200 rounded-full overflow-hidden">
-              <div
-                className="h-full bg-secondary rounded-full"
-                style={{ width: `${(course.currentStudents / course.maxStudents) * 100}%` }}
-              />
-            </div>
-          </div>
+        {/* Meta cards */}
+        <div className="mt-8 grid grid-cols-2 md:grid-cols-4 gap-3">
+          {[
+            { icon: typeIcons[course.type], label: "수강 방식", value: getTypeLabel(course.type), color: "bg-blue-50" },
+            { icon: <Calendar className="w-5 h-5" />, label: "교육 기간", value: `${course.startDate} ~`, sub: course.endDate, color: "bg-purple-50" },
+            { icon: <Clock className="w-5 h-5" />, label: "총 수업시간", value: `${Math.floor(totalDuration / 60)}시간 ${totalDuration % 60}분`, color: "bg-amber-50" },
+            { icon: <Users className="w-5 h-5" />, label: "수강 현황", value: `${course.currentStudents}/${course.maxStudents}명`, color: "bg-green-50" },
+          ].map((item, i) => (
+            <motion.div
+              key={i}
+              whileHover={{ y: -2 }}
+              className={`p-4 ${item.color} rounded-2xl`}
+            >
+              <div className="flex items-center gap-2 text-sm text-gray-500 mb-1.5">
+                {item.icon}
+                {item.label}
+              </div>
+              <p className="font-bold text-gray-900">{item.value}</p>
+              {item.sub && <p className="text-sm text-gray-500">{item.sub}</p>}
+              {item.label === "수강 현황" && (
+                <div className="mt-2 h-1.5 bg-white rounded-full overflow-hidden">
+                  <motion.div
+                    initial={{ width: 0 }}
+                    whileInView={{ width: `${(course.currentStudents / course.maxStudents) * 100}%` }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 1, ease: "easeOut" }}
+                    className="h-full bg-gradient-to-r from-secondary to-secondary-light rounded-full"
+                  />
+                </div>
+              )}
+            </motion.div>
+          ))}
         </div>
+      </MotionSection>
 
-        {/* Instructor */}
-        <div className="mt-8 p-6 bg-blue-50 rounded-2xl">
-          <h3 className="text-lg font-bold mb-3">강사 소개</h3>
+      {/* Instructor */}
+      <MotionSection delay={0.15} className="mt-8">
+        <div className="p-6 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-3xl">
+          <h3 className="text-lg font-extrabold mb-4 flex items-center gap-2">
+            <Award className="w-5 h-5 text-secondary" />
+            강사 소개
+          </h3>
           <div className="flex items-center gap-4">
             {course.instructorImage ? (
-              <img src={course.instructorImage} alt={course.instructorName} className="w-16 h-16 rounded-full object-cover" />
+              <img src={course.instructorImage} alt={course.instructorName} className="w-16 h-16 rounded-2xl object-cover shadow-md" />
             ) : (
-              <div className="w-16 h-16 bg-secondary/20 rounded-full flex items-center justify-center text-secondary font-bold text-xl">
+              <div className="w-16 h-16 bg-secondary/20 rounded-2xl flex items-center justify-center text-secondary font-bold text-xl">
                 {course.instructorName.charAt(0)}
               </div>
             )}
             <div>
-              <p className="font-bold text-gray-900 text-lg">{course.instructorName}</p>
-              <div className="flex items-center gap-1 mt-1">
-                <Star className="w-4 h-4 fill-amber-400 text-amber-400" />
-                <span className="text-sm font-bold">{course.rating}</span>
+              <p className="font-extrabold text-gray-900 text-lg">{course.instructorName}</p>
+              <div className="flex items-center gap-2 mt-1">
+                <div className="flex items-center gap-0.5">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className={`w-3.5 h-3.5 ${i < Math.floor(course.rating) ? "fill-amber-400 text-amber-400" : "fill-gray-200 text-gray-200"}`} />
+                  ))}
+                </div>
+                <span className="text-sm font-bold text-gray-700">{course.rating}</span>
                 <span className="text-sm text-gray-500">({course.reviewCount}개 리뷰)</span>
               </div>
             </div>
           </div>
         </div>
+      </MotionSection>
 
-        {/* Curriculum */}
-        <div className="mt-8">
-          <h3 className="text-lg font-bold mb-4 flex items-center gap-2">
-            <BookOpen className="w-5 h-5 text-secondary" />
-            커리큘럼 ({course.lessons.length}강)
-          </h3>
-          <div className="space-y-2">
-            {course.lessons.map((lesson, idx) => (
-              <div key={idx} className="flex items-center justify-between p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition">
-                <div className="flex items-center gap-3">
-                  <span className="w-8 h-8 bg-secondary/10 text-secondary rounded-full flex items-center justify-center text-sm font-bold">
-                    {idx + 1}
-                  </span>
-                  <span className="font-medium text-gray-900">{lesson.title}</span>
-                </div>
-                <span className="text-sm text-gray-500">{lesson.duration}분</span>
-              </div>
-            ))}
+      {/* Curriculum */}
+      <MotionSection delay={0.2} className="mt-8">
+        <h3 className="text-lg font-extrabold mb-4 flex items-center gap-2">
+          <div className="p-1.5 bg-secondary/10 rounded-lg">
+            <BookOpen className="w-4 h-4 text-secondary" />
           </div>
+          커리큘럼 ({course.lessons.length}강)
+        </h3>
+        <div className="space-y-2">
+          {course.lessons.map((lesson, idx) => (
+            <motion.div
+              key={idx}
+              initial={{ opacity: 0, x: -10 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: idx * 0.05 }}
+              whileHover={{ x: 4 }}
+              className="flex items-center justify-between p-4 bg-white border border-gray-100 rounded-2xl hover:shadow-md hover:border-secondary/20 transition-all group"
+            >
+              <div className="flex items-center gap-3">
+                <span className="w-9 h-9 bg-gradient-to-br from-secondary/10 to-secondary/5 text-secondary rounded-xl flex items-center justify-center text-sm font-bold group-hover:from-secondary group-hover:to-secondary-dark group-hover:text-white transition-all">
+                  {idx + 1}
+                </span>
+                <span className="font-medium text-gray-900">{lesson.title}</span>
+              </div>
+              <span className="text-sm text-gray-500 font-medium">{lesson.duration}분</span>
+            </motion.div>
+          ))}
         </div>
+      </MotionSection>
 
-        {/* Sticky CTA */}
-        <div className="mt-8 p-6 bg-white border border-gray-200 rounded-2xl shadow-lg sticky bottom-4">
+      {/* Sticky CTA */}
+      <MotionSection delay={0.25} className="mt-10">
+        <div className="p-6 bg-white border border-gray-200 rounded-3xl shadow-xl sticky bottom-4">
           <div className="flex items-center justify-between flex-wrap gap-4">
             <div>
               {course.price === 0 ? (
-                <span className="text-3xl font-black text-primary">무료</span>
+                <span className="text-3xl font-black bg-gradient-to-r from-primary to-primary-light bg-clip-text text-transparent">무료</span>
               ) : (
                 <span className="text-3xl font-black text-gray-900">
                   {formatPrice(course.price)}
-                  <span className="text-lg font-normal text-gray-500">원</span>
+                  <span className="text-lg font-normal text-gray-400 ml-1">원</span>
                 </span>
               )}
             </div>
-            <button
+            <motion.button
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.97 }}
               onClick={() => alert("수강 신청이 완료되었습니다!")}
-              className="px-8 py-3.5 bg-secondary text-white font-semibold rounded-xl hover:bg-secondary-dark transition"
+              className="px-10 py-4 bg-gradient-to-r from-secondary to-secondary-dark text-white font-semibold rounded-2xl shadow-lg shadow-secondary/30 hover:shadow-xl hover:shadow-secondary/40 transition-shadow btn-ripple"
             >
               수강 신청하기
-            </button>
+            </motion.button>
           </div>
         </div>
-      </div>
+      </MotionSection>
     </div>
   );
 }
