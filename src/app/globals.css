@@ -1,26 +1,39 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-primary: #FF4D4F;
+  --color-primary-dark: #D9363E;
+  --color-secondary: #1890FF;
+  --color-secondary-dark: #096DD9;
+  --color-accent: #FFC107;
+  --color-dark: #1A1A2E;
+  --color-dark-light: #16213E;
+  --color-light: #F8F9FA;
+  --color-kakao: #FEE500;
+  --color-naver: #03C75A;
+  --color-youtube: #FF0000;
+  --color-tiktok: #000000;
+  --color-instagram: #E1306C;
+  --color-zoom: #2D8CFF;
+  --font-sans: "Pretendard", "Inter", system-ui, sans-serif;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: #ffffff;
+  color: #1A1A2E;
+  font-family: var(--font-sans);
+}
+
+@keyframes pulse-live {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.animate-pulse-live {
+  animation: pulse-live 1.5s ease-in-out infinite;
+}
+
+@keyframes slide {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-100%); }
 }
