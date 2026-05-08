@@ -25,8 +25,14 @@ export default function CourseCard({ course }: { course: Course }) {
     <Link href={`/education/${course.id}`} className="group block">
       <div className="rounded-xl overflow-hidden bg-white shadow-md hover:shadow-xl transition-all duration-300 group-hover:-translate-y-1 border border-gray-100">
         {/* Thumbnail */}
-        <div className={`aspect-[16/10] bg-gradient-to-br ${categoryColors[course.category] || "from-gray-400 to-gray-600"} flex items-center justify-center relative`}>
-          <span className="text-white/20 text-7xl font-black">{course.category.charAt(0)}</span>
+        <div className={`aspect-[16/10] bg-gradient-to-br ${categoryColors[course.category] || "from-gray-400 to-gray-600"} relative overflow-hidden`}>
+          {course.thumbnail ? (
+            <img src={course.thumbnail} alt={course.title} className="w-full h-full object-cover" />
+          ) : (
+            <div className="w-full h-full flex items-center justify-center">
+              <span className="text-white/20 text-7xl font-black">{course.category.charAt(0)}</span>
+            </div>
+          )}
           <span className={`absolute top-3 left-3 px-2.5 py-1 ${typeColors[course.type]} text-xs font-bold rounded-full`}>
             {getTypeLabel(course.type)}
           </span>

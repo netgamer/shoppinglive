@@ -41,8 +41,14 @@ export default function LiveDetailClient({ id }: { id: string }) {
       </Link>
 
       {/* Hero */}
-      <div className={`aspect-video rounded-2xl bg-gradient-to-br ${bgColors[event.platform]} flex items-center justify-center relative overflow-hidden`}>
-        <span className="text-white/20 text-[120px] font-black">{platform.icon}</span>
+      <div className={`aspect-video rounded-2xl bg-gradient-to-br ${bgColors[event.platform]} relative overflow-hidden`}>
+        {event.thumbnail ? (
+          <img src={event.thumbnail} alt={event.title} className="w-full h-full object-cover" />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center">
+            <span className="text-white/20 text-[120px] font-black">{platform.icon}</span>
+          </div>
+        )}
         <span className={`absolute top-4 left-4 px-3 py-1.5 ${statusLabel[event.status].class} text-sm font-bold rounded-full`}>
           {statusLabel[event.status].text}
         </span>

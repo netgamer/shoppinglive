@@ -46,8 +46,15 @@ export default function CourseDetailClient({ id }: { id: string }) {
       </Link>
 
       {/* Hero */}
-      <div className={`aspect-[21/9] rounded-2xl bg-gradient-to-br ${categoryColors[course.category] || "from-gray-400 to-gray-600"} flex items-center justify-center relative overflow-hidden`}>
-        <span className="text-white/10 text-[150px] font-black">{course.category.charAt(0)}</span>
+      <div className={`aspect-[21/9] rounded-2xl bg-gradient-to-br ${categoryColors[course.category] || "from-gray-400 to-gray-600"} relative overflow-hidden`}>
+        {course.thumbnail ? (
+          <img src={course.thumbnail} alt={course.title} className="w-full h-full object-cover" />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center">
+            <span className="text-white/10 text-[150px] font-black">{course.category.charAt(0)}</span>
+          </div>
+        )}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
         <div className="absolute bottom-4 left-4 right-4">
           <span className="px-3 py-1 bg-white/20 backdrop-blur text-white text-sm font-medium rounded-full">
             {course.category}
@@ -103,9 +110,13 @@ export default function CourseDetailClient({ id }: { id: string }) {
         <div className="mt-8 p-6 bg-blue-50 rounded-2xl">
           <h3 className="text-lg font-bold mb-3">강사 소개</h3>
           <div className="flex items-center gap-4">
-            <div className="w-16 h-16 bg-secondary/20 rounded-full flex items-center justify-center text-secondary font-bold text-xl">
-              {course.instructorName.charAt(0)}
-            </div>
+            {course.instructorImage ? (
+              <img src={course.instructorImage} alt={course.instructorName} className="w-16 h-16 rounded-full object-cover" />
+            ) : (
+              <div className="w-16 h-16 bg-secondary/20 rounded-full flex items-center justify-center text-secondary font-bold text-xl">
+                {course.instructorName.charAt(0)}
+              </div>
+            )}
             <div>
               <p className="font-bold text-gray-900 text-lg">{course.instructorName}</p>
               <div className="flex items-center gap-1 mt-1">

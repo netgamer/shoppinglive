@@ -33,7 +33,14 @@ export default function HomePage() {
               i === currentBanner ? "opacity-100 z-10" : "opacity-0 z-0"
             }`}
           >
-            <div className="max-w-7xl mx-auto px-4 w-full">
+            {banner.image && (
+              <img
+                src={banner.image}
+                alt={banner.title}
+                className="absolute inset-0 w-full h-full object-cover mix-blend-overlay opacity-40"
+              />
+            )}
+            <div className="max-w-7xl mx-auto px-4 w-full relative z-10">
               <div className="max-w-xl">
                 <h1 className="text-3xl md:text-5xl font-black text-white leading-tight whitespace-pre-line">
                   {banner.title}

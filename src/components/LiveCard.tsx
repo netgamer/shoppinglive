@@ -36,8 +36,14 @@ export default function LiveCard({ event }: { event: LiveEvent }) {
     <Link href={`/live/${event.id}`} className="group block">
       <div className="relative rounded-xl overflow-hidden bg-gray-100 shadow-md hover:shadow-xl transition-all duration-300 group-hover:-translate-y-1">
         {/* Thumbnail */}
-        <div className={`aspect-video bg-gradient-to-br ${bgColors[event.platform]} flex items-center justify-center`}>
-          <span className="text-white/90 text-5xl font-bold">{platform.icon}</span>
+        <div className={`aspect-video bg-gradient-to-br ${bgColors[event.platform]} relative overflow-hidden`}>
+          {event.thumbnail ? (
+            <img src={event.thumbnail} alt={event.title} className="w-full h-full object-cover" />
+          ) : (
+            <div className="w-full h-full flex items-center justify-center">
+              <span className="text-white/90 text-5xl font-bold">{platform.icon}</span>
+            </div>
+          )}
         </div>
 
         {statusBadge[event.status]}
